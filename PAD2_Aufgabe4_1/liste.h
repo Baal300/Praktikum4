@@ -176,7 +176,7 @@ public:
     {
         if(!empty()){
             if(m_currentElement->m_nextElement != nullptr){
-                cout << "***ADVANCE BY ONE POSITION***\n";
+            //    cout << "***ADVANCE BY ONE POSITION***\n";
                 m_currentElement = m_currentElement->m_nextElement;     //Set position pointer to next element
             }
             else{
@@ -394,7 +394,7 @@ public:
         }
         reset();
 
-        cout << "Length: " << listLength << '\n';
+        //cout << "Length: " << listLength << '\n';
 
         return listLength;
     }
@@ -455,6 +455,257 @@ public:
 
         /* answer = merge the two sorted lists together */
         *this = merge(a, b);
+    }
+
+
+    void printTree()
+    {
+        int treeSize{ length() };
+
+        if (!empty())
+        {
+            reset();
+            for (int i{0}; i < treeSize; i++){
+                switch (i)
+                {
+                    case 0:
+                        cout << "             ___________" << m_currentElement->m_information <<"___________\n";
+                        break;
+                    case 1:
+                        cout << "            /                       \\\n"
+                             << "       ____" << m_currentElement->m_information << "____";
+                        break;
+                    case 2:
+                        cout << "                 ____" << m_currentElement->m_information << "____\n";
+                        break;
+                    case 3:
+                        cout << "      /         \\               /         \\\n"
+                             << "    _" << m_currentElement->m_information << "_ ";
+                        break;
+                    case 4:
+                        cout << "        _" << m_currentElement->m_information << "_";
+                        break;
+                    case 5:
+                        cout << "           _" << m_currentElement->m_information << "_";
+                        break;
+                    case 6:
+                        cout << "         _" << m_currentElement->m_information << "_\n";
+                        break;
+                    case 7:
+                        cout << "   /   \\       /   \\         /   \\       /   \\\n";
+                        cout << "  " << m_currentElement->m_information;
+                        break;
+                    case 8:
+                        cout << "     " << m_currentElement->m_information;
+                        break;
+                    case 9:
+                        cout << "     " << m_currentElement->m_information;
+                        break;
+                    case 10:
+                        cout << "     " << m_currentElement->m_information;
+                        break;
+                    case 11:
+                        cout << "       " << m_currentElement->m_information;
+                        break;
+                    case 12:
+                        cout << "     " << m_currentElement->m_information;
+                        break;
+                    case 13:
+                        cout << "     " << m_currentElement->m_information << " ";
+                        break;
+                    case 14:
+                        cout << "    " << m_currentElement->m_information << '\n';
+                        break;
+                    default:
+                        cerr << "ERROR\n";
+                        break;
+                }
+
+                if(m_currentElement->m_nextElement != nullptr)
+                {
+                    adv();
+                }
+            }
+            cout << '\n';
+        }
+    }
+
+    Item<T>* getParent(int index)
+    {
+        cout << "****GETPARENT****\n";
+        //Node = root
+        if(index == 0)
+        {
+            cerr << "Node has no parent!\n";
+            return nullptr;
+        }
+
+        Item<T>* node;
+        reset();
+        //Find out which node we look at via index
+        for(int i{0}; i < index; i++)
+        {
+            adv();
+        }
+        node = m_currentElement;
+
+
+        int parentIndex{(index-1)/2};
+        reset();
+        //Find out which node is parent
+        for(int i{0}; i < parentIndex; i++)
+        {
+            adv();
+        }
+        Item<T>* parentNode{m_currentElement};
+
+        cout << "Parent element: " << parentNode->m_information << " Index : " << parentIndex << '\n';
+        return parentNode;
+    }
+
+    Item<T>* getLeftChild(int index)
+    {
+        cout << "****GETLEFTCHILD****\n";
+        Item<T>* node;
+
+        reset();
+        //Find out which node we look at via index
+        for(int i{0}; i < index; i++)
+        {
+            adv();
+        }
+        node = m_currentElement;
+
+        int childIndex{2*index+1};
+
+        int treeSize{ length() };
+
+        //THERE IS NO LEFT CHILD
+        if(childIndex > treeSize-1){
+            cout << "There is no left child.\n";
+            return nullptr;
+        }
+
+        reset();
+        //Find out which node is left child
+        for(int i{0}; i < childIndex; i++)
+        {
+            adv();
+        }
+
+        Item<T>* childNode{m_currentElement};
+
+        cout << "Left child element: " << childNode->m_information << " Index : " << childIndex << '\n';
+        return childNode;
+    }
+
+    Item<T>* getRightChild(int index)
+    {
+        cout << "****GETRIGHTCHILD****\n";
+        Item<T>* node;
+
+        reset();
+        //Find out which node we look at via index
+        for(int i{0}; i < index; i++)
+        {
+            adv();
+        }
+        node = m_currentElement;
+
+        int childIndex{2*index+2};
+
+        int treeSize{ length() };
+
+        //THERE IS NO right CHILD
+        if(childIndex > treeSize-1){
+            cout << "There is no right child.\n";
+            return nullptr;
+        }
+
+        reset();
+        //Find out which node is right child
+        for(int i{0}; i < childIndex; i++)
+        {
+            adv();
+        }
+
+        Item<T>* childNode{m_currentElement};
+
+        cout << "Right child element: " << childNode->m_information << " Index : " << childIndex << '\n';
+        return childNode;
+    }
+
+    Item<T>* getNode(int index)
+    {
+        cout << "*****GETNODE*****\n";
+        Item<T>* node;
+
+        reset();
+        //Find out which node we look at via index
+        for(int i{0}; i < index; i++)
+        {
+            adv();
+        }
+        node = m_currentElement;
+    }
+
+    void heapSort()
+    {
+        //n = tree size
+        int treeSize{length()};
+
+        //Build heap; n/2 - 1 is index of last node that is not a leave
+        for(int i{treeSize/2 - 1}; i >= 0; i--)
+        {
+            heapify(treeSize, i);
+        }
+
+        // One by one extract an element from heap
+        for (int i{treeSize - 1}; i > 0; i--) {
+            // Swapping first element with last element
+            swap(getNode(0), getNode(i));
+
+            // call max heapify on the reduced heap
+            heapify(i, 0);
+        }
+
+    }
+
+    void heapify(int treeSize, int index)
+    {
+        int largestIndex {index};    //Root of subtree
+        int leftIndex {2*index+1};
+        int rightIndex {2*index+2};
+
+        Item<T>* largest{getNode(index)};
+        Item<T>* leftChild{getLeftChild(index)};
+        Item<T>* rightChild{getRightChild(index)};
+
+        //If left is greater than root
+        if ( leftIndex < treeSize && leftChild->m_information > largest->m_information)
+        {
+            swap(leftChild, largest);
+            printTree();
+            //Recursively heapify subtree
+            heapify(treeSize, leftIndex);
+        }
+
+        //If right is greater than root
+        if ( rightIndex < treeSize && rightChild->m_information > largest->m_information)
+        {
+            swap(rightChild, largest);
+            printTree();
+            //Recursively heapify subtree
+            heapify(treeSize, rightIndex);
+        }
+
+    }
+
+    void swap(Item<T>* a, Item<T>* b)
+    {
+        T tmp = a->m_information;
+        a->m_information = b->m_information;
+        b->m_information = tmp;
     }
 
     //Dysfunctional methods
